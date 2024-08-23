@@ -3,8 +3,9 @@
 #include <stdlib.h>
 /*Miguel de Sousa Batista 3A CC
 21/08/24
-1 iteração ~ 9pm
+1 iteração ~ 9pm 21/08
 
+2 iteração ~ 10pm 22/08
 Resolvi usar listas encadeadas para essa tarefa para exercitar meus conhecimentos que também vão ser usados na cadeira de Algoritimos e estruturas de dados */
 
 
@@ -85,33 +86,43 @@ return resultado;
 
 }
 
-void DecimalToBin(int NumeroConvertido, struct Stack **top){
+void DecimalToBin(int numeroConvertido, struct Stack **top){
     int restoDiv;
-    while(NumeroConvertido!=0){
-        restoDiv=NumeroConvertido%2;
-        NumeroConvertido=NumeroConvertido/2;
-        push(restoDiv, top);//gcc -pg calculadora.c -o calculadora gprof ./calculadora gmon.out > analysis.txt
+    while(numeroConvertido!=0){
+        restoDiv=numeroConvertido%2;
+        numeroConvertido=numeroConvertido/2;
+        push(restoDiv, top);
 
     }
 }
 
-void DecimalToOcto(int NumeroConvertido, struct Stack **top){
+void DecimalToOcto(int numeroConvertido, struct Stack **top){
     int restoDiv;
-    while(NumeroConvertido!=0){
-        restoDiv=NumeroConvertido%8;
-        NumeroConvertido=NumeroConvertido/8;
+    while(numeroConvertido!=0){
+        restoDiv=numeroConvertido%8;
+        numeroConvertido=numeroConvertido/8;
         push(restoDiv, top);
     }
 }
-void DecimalToHex(int NumeroConvertido, struct Stack **top){
+void DecimalToHex(int numeroConvertido, struct Stack **top){
     int restoDiv;
-    while(NumeroConvertido!=0){
-        restoDiv=NumeroConvertido%16;
+    while(numeroConvertido!=0){
+        restoDiv=numeroConvertido%16;
         if(restoDiv>=10){
             restoDiv='A'+restoDiv-10;//Conversão pro caractere Alfabético
         }
-        NumeroConvertido=NumeroConvertido/16;
+        numeroConvertido=numeroConvertido/16;
         push(restoDiv, top);
+    }
+}
+void DecimalToBCD(int numeroConvertido, struct Stack **top){
+    int digito=0;
+    while(numeroConvertido!=0){
+        digito=numeroConvertido%10;
+        DecimalToBin(digito, top);
+        printf("digito atual [%d]\n", digito);
+        numeroConvertido=numeroConvertido/10;
+
     }
 }
 int main() {
@@ -165,6 +176,13 @@ int main() {
                 printf("Base Hexa: ");
                 printf("[0][x]");
                 DecimalToHex(num, &top);
+                PrintStack(top);
+                printf("\n");
+
+                ClearStack(&top);//Vamos reutilizar a pilha novamente
+
+                printf("Base BCD: ");
+                DecimalToBCD(num, &top);
                 PrintStack(top);
                 break;
 
