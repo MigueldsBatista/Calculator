@@ -5,10 +5,11 @@
 /*Miguel de Sousa Batista 3A CC
 21/08/24
 1 iteração ~ 9pm 21/08
-1 iteração ~ 9pm 21/08
 
 2 iteração ~ 10pm 22/08
-2 iteração ~ 10pm 22/08
+
+3 iteração ~ 10am 23/08
+
 Resolvi usar listas encadeadas para essa tarefa para exercitar meus conhecimentos que também vão ser usados na cadeira de Algoritimos e estruturas de dados */
 
 //o que eu preciso pra reverter uma lista?
@@ -58,39 +59,42 @@ void ClearNode(struct Node **top){
     }
 }
 void PrintNode(struct Node *top){
-    struct Node *walk=top;
-    while(walk){
+    while(top){
     if(
-        walk->data==67|| //'A'
-        walk->data==68|| //'B'
-        walk->data==69|| //'C'
-        walk->data==70|| //'D'
-        walk->data==71||// 'E'
-        walk->data==72)// 'F'
+        top->data==67|| //'A'
+        top->data==68|| //'B'
+        top->data==69|| //'C'
+        top->data==70|| //'D'
+        top->data==71||// 'E'
+        top->data==72)// 'F'
     {
-        printf("[%c]", walk->data);
+        printf("[%c]", top->data);
     } 
     else {
-    printf("[%d]", walk->data);
+    printf("[%d]", top->data);
     }
-    walk=walk->next;   
+    top=top->next;   
 
     }
 }
-
-int BinToDecimal(struct Node *top){
-struct Node *walk = (struct Node*)malloc(sizeof(struct Node)); // aloca memória para o novo nó
-walk=top;
+int length(struct Node *top){//retorna o tamanho de uma lista dinamica
 int len=0;
+
+while(top){
+    len++;
+    top=top->next;
+}
+return len;
+
+} 
+int BinToDecimal(struct Node *top){
+
+struct Node *walk=top;
+
+int len=length(top);
+
 int resultado=0;
 
-while(walk){
-    len++;
-    walk=walk->next;
-
-    
-}
-walk=top;
 while (walk)
 {
 resultado=resultado+(walk->data*power(2, --len));
@@ -100,12 +104,9 @@ return resultado;
 
 }
 
-void DecimalToBin(int numeroConvertido, struct Node **top){
+void DecimalToBin(int numeroConvertido, struct Node **top){//converte um numero decimal para binario e joga o valor na Pilha top
     int restoDiv;
-    while(numeroConvertido!=0){
-        restoDiv=numeroConvertido%2;
-        numeroConvertido=numeroConvertido/2;
-        push(restoDiv, top);
+
     while(numeroConvertido!=0){
         restoDiv=numeroConvertido%2;
         numeroConvertido=numeroConvertido/2;
@@ -114,48 +115,47 @@ void DecimalToBin(int numeroConvertido, struct Node **top){
     }
 }
 
-void DecimalToOcto(int numeroConvertido, struct Node **top){
+void DecimalToOcto(int numeroConvertido, struct Node **top){//converte um numero decimal para octa 
     int restoDiv;
-    while(numeroConvertido!=0){
-        restoDiv=numeroConvertido%8;
-        numeroConvertido=numeroConvertido/8;
+
     while(numeroConvertido!=0){
         restoDiv=numeroConvertido%8;
         numeroConvertido=numeroConvertido/8;
         push(restoDiv, top);
     }
 }
-void DecimalToHex(int numeroConvertido, struct Node **top){
+void DecimalToHex(int numeroConvertido, struct Node **top){//converte um numero decimal para hexadecimal
     int restoDiv;
-    while(numeroConvertido!=0){
-        restoDiv=numeroConvertido%16;
+
     while(numeroConvertido!=0){
         restoDiv=numeroConvertido%16;
         if(restoDiv>=10){
             restoDiv='A'+restoDiv-10;//Conversão pro caractere Alfabético
         }
         numeroConvertido=numeroConvertido/16;
-        numeroConvertido=numeroConvertido/16;
         push(restoDiv, top);
+    
     }
 }
-void DecimalToBCD(int numeroConvertido, struct Node **top){
+void DecimalToBCD(int numeroConvertido, struct Node **top){//Recebe um numero decimal e retorna o numero em Binary Coded Decimal
     int digito=0;
     while(numeroConvertido!=0){
         digito=numeroConvertido%10;
-        DecimalToBin(digito, top);
-        printf("digito atual [%d]\n", digito);
+        DecimalToBin(digito, top);//chama a função pra converter em binario os digitos individualmente
+
+        //printf("digito atual [%d]\n", digito);
+
         numeroConvertido=numeroConvertido/10;
         
     }
 }
-// funções necessarias pra converter um binario pra 16 bits com sinal
+
 
 
 int LastDigitOneInBin(struct Node *top){//retorna a posição do ultimo valor 1 em uma lista para que eu consiga converter um bin para negativo com complemento a 2
     int len=0;
     int lastDigitOnePos=-1;
-    while(top){//O numero precisa ser 1
+    while(top){
         len++;
         if(top->data==1){
             lastDigitOnePos=len;
@@ -164,7 +164,7 @@ int LastDigitOneInBin(struct Node *top){//retorna a posição do ultimo valor 1 
     }
     return lastDigitOnePos;
 }
-void BinToSignedBin(int lastOnePos, struct Node**top){
+void BinToSignedBin(int lastOnePos, struct Node**top){//converte um binario para sua versão negativa com complemento a 2
     struct Node *walk = *top;
     int len = 1;
 
@@ -180,13 +180,21 @@ void BinToSignedBin(int lastOnePos, struct Node**top){
         len++;
         walk = walk->next;
     }
+}
 
-    void CompleteBin(int carry, int lengthStack){//função pra preencher o resto dos valores binarios mais o carry 0 positivo e 1 negativo
-        
+void ConvertBinToXbits(int numeroBits, struct Node **top){//função que recebe uma pilha binaria e converte para a quantidade de bits desejada pra representação
+
+numeroBits=numeroBits-length(*top);//ex o numero tem 4 bits e precisa ser representado em 16, ou seja precisamos add 12 bits
+
+for(int i=0;i<numeroBits;i++){
+push(0, top);
+}
+
 }
 int main() {
     int option;
     int num;
+    char signal;
     struct Node *top=NULL;
     do {
         printf("Calculadora Programador Didática\n");
@@ -207,14 +215,16 @@ int main() {
             break;
         }
 
-        printf("Digite um número em base 10: ");
-        scanf("%d", &num);
+
 
         switch(option) {
             case 1:
+                system("clear");
+            
+                printf("Digite um número em base 10: ");
+                scanf("%d", &num);
                 if(top) ClearNode(&top);//Caso não seja a primeira iteração
 
-                system("clear");
                 DecimalToBin(num, &top);
                 printf("Base Binária:");
                 PrintNode(top);
@@ -246,21 +256,24 @@ int main() {
                 break;
 
             case 2:
-                printf("Converter base 10 para base com sinal (Complemento a 2, 16 bits)\n");
+                system("clear");
+                printf("Digite um número em base 10 e o seu sinal (+ ou -) ex -10, +23: ");
+                scanf(" %c%d", &signal, &num);
                 ClearNode(&top);
 
-                DecimalToBin(num, &top);
-                printf("DECIMAL PADRAO\n");
-                PrintNode(top);
-                printf("\n");
+                if(signal=='+'){
+                    DecimalToBin(num, &top);
+                    ConvertBinToXbits(16, &top);
+                }
+                else if(signal=='-'){
+                    DecimalToBin(num, &top);
+                    ConvertBinToXbits(16, &top);                    
+                    int lastOnePos= LastDigitOneInBin(top);
+                    BinToSignedBin(lastOnePos, &top);
+                }
+                else printf("Sinal inválido!");
 
- 
-
-                int lastOnePos= LastDigitOneInBin(top);
-                printf("LAST ONE POSITION %d", lastOnePos);
-                BinToSignedBin(lastOnePos, &top);
-
-                printf("Numero convertido pra complemento a 2 sem 16 bits\n");
+                printf("Numero convertido pra complemento a 2  16 bits\n");
                 PrintNode(top);
                 printf("\n");
 
