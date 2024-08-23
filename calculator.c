@@ -60,23 +60,18 @@ void ClearNode(struct Node **top){
 }
 void PrintNode(struct Node *top){
     while(top){
-    if(
-        top->data==67|| //'A'
-        top->data==68|| //'B'
-        top->data==69|| //'C'
-        top->data==70|| //'D'
-        top->data==71||// 'E'
-        top->data==72)// 'F'
-    {
+
+    if(top->data>9){
+        top->data='A'+(top->data-10);//Conversão pra considerar os casos hexadecimais
         printf("[%c]", top->data);
-    } 
+    }
     else {
     printf("[%d]", top->data);
     }
     top=top->next;   
-
-    }
+} 
 }
+
 int length(struct Node *top){//retorna o tamanho de uma lista dinamica
 int len=0;
 
@@ -103,45 +98,23 @@ walk=walk->next;
 return resultado;
 
 }
-
-void DecimalToBin(int numeroConvertido, struct Node **top){//converte um numero decimal para binario e joga o valor na Pilha top
+void DecimalToBaseX(int numeroConvertido,int baseNumerica, struct Node **top){//converte um numero decimal para uma base determinada pelo usuario e joga o valor na Pilha top
     int restoDiv;
 
     while(numeroConvertido!=0){
-        restoDiv=numeroConvertido%2;
-        numeroConvertido=numeroConvertido/2;
+        restoDiv=numeroConvertido%baseNumerica;
+        numeroConvertido=numeroConvertido/baseNumerica;
         push(restoDiv, top);
 
     }
 }
 
-void DecimalToOcto(int numeroConvertido, struct Node **top){//converte um numero decimal para octa 
-    int restoDiv;
 
-    while(numeroConvertido!=0){
-        restoDiv=numeroConvertido%8;
-        numeroConvertido=numeroConvertido/8;
-        push(restoDiv, top);
-    }
-}
-void DecimalToHex(int numeroConvertido, struct Node **top){//converte um numero decimal para hexadecimal
-    int restoDiv;
-
-    while(numeroConvertido!=0){
-        restoDiv=numeroConvertido%16;
-        if(restoDiv>=10){
-            restoDiv='A'+restoDiv-10;//Conversão pro caractere Alfabético
-        }
-        numeroConvertido=numeroConvertido/16;
-        push(restoDiv, top);
-    
-    }
-}
 void DecimalToBCD(int numeroConvertido, struct Node **top){//Recebe um numero decimal e retorna o numero em Binary Coded Decimal
     int digito=0;
     while(numeroConvertido!=0){
         digito=numeroConvertido%10;
-        DecimalToBin(digito, top);//chama a função pra converter em binario os digitos individualmente
+        DecimalToBaseX(numeroConvertido,2, &top);//base binaria
 
         //printf("digito atual [%d]\n", digito);
 
@@ -149,8 +122,6 @@ void DecimalToBCD(int numeroConvertido, struct Node **top){//Recebe um numero de
         
     }
 }
-
-
 
 int LastDigitOneInBin(struct Node *top){//retorna a posição do ultimo valor 1 em uma lista para que eu consiga converter um bin para negativo com complemento a 2
     int len=0;
@@ -225,7 +196,7 @@ int main() {
                 scanf("%d", &num);
                 if(top) ClearNode(&top);//Caso não seja a primeira iteração
 
-                DecimalToBin(num, &top);
+                DecimalToBaseX(num,2, &top);
                 printf("Base Binária:");
                 PrintNode(top);
                 printf("\n");
@@ -236,7 +207,7 @@ int main() {
                 ClearNode(&top);//Vamos reutilizar a pilha
 
                 printf("Base Octo: ");
-                DecimalToOcto(num, &top);
+                DecimalToBaseX(num,8, &top);
                 PrintNode(top);
                 printf("\n");
 
@@ -244,7 +215,7 @@ int main() {
 
                 printf("Base Hexa: ");
                 printf("[0][x]");
-                DecimalToHex(num, &top);
+                DecimalToBaseX(num,16, &top);
                 PrintNode(top);
                 printf("\n");
 
@@ -262,11 +233,11 @@ int main() {
                 ClearNode(&top);
 
                 if(signal=='+'){
-                    DecimalToBin(num, &top);
+                    DecimalToBaseX(num,2, &top);//base binaria
                     ConvertBinToXbits(16, &top);
                 }
                 else if(signal=='-'){
-                    DecimalToBin(num, &top);
+                    DecimalToBaseX(num,2, &top);//base binaria
                     ConvertBinToXbits(16, &top);                    
                     int lastOnePos= LastDigitOneInBin(top);
                     BinToSignedBin(lastOnePos, &top);
