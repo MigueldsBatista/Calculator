@@ -5,7 +5,9 @@
 /*Miguel de Sousa Batista 3A CC
 21/08/24
 1 iteração ~ 9pm 21/08
+1 iteração ~ 9pm 21/08
 
+2 iteração ~ 10pm 22/08
 2 iteração ~ 10pm 22/08
 Resolvi usar listas encadeadas para essa tarefa para exercitar meus conhecimentos que também vão ser usados na cadeira de Algoritimos e estruturas de dados */
 
@@ -104,12 +106,19 @@ void DecimalToBin(int numeroConvertido, struct Node **top){
         restoDiv=numeroConvertido%2;
         numeroConvertido=numeroConvertido/2;
         push(restoDiv, top);
+    while(numeroConvertido!=0){
+        restoDiv=numeroConvertido%2;
+        numeroConvertido=numeroConvertido/2;
+        push(restoDiv, top);
 
     }
 }
 
 void DecimalToOcto(int numeroConvertido, struct Node **top){
     int restoDiv;
+    while(numeroConvertido!=0){
+        restoDiv=numeroConvertido%8;
+        numeroConvertido=numeroConvertido/8;
     while(numeroConvertido!=0){
         restoDiv=numeroConvertido%8;
         numeroConvertido=numeroConvertido/8;
@@ -120,9 +129,12 @@ void DecimalToHex(int numeroConvertido, struct Node **top){
     int restoDiv;
     while(numeroConvertido!=0){
         restoDiv=numeroConvertido%16;
+    while(numeroConvertido!=0){
+        restoDiv=numeroConvertido%16;
         if(restoDiv>=10){
             restoDiv='A'+restoDiv-10;//Conversão pro caractere Alfabético
         }
+        numeroConvertido=numeroConvertido/16;
         numeroConvertido=numeroConvertido/16;
         push(restoDiv, top);
     }
