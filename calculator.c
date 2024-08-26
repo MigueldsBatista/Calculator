@@ -10,6 +10,7 @@
 
 3 iteração ~ 10am 23/08
 
+4 iteração 25/08 ~ 21:30 pm
 Resolvi usar listas encadeadas para essa tarefa para exercitar meus conhecimentos que também vão ser usados na cadeira de Algoritimos e estruturas de dados */
 
 //o que eu preciso pra reverter uma lista?
@@ -73,7 +74,7 @@ void PrintNode(struct Node *top){
 }
 
 int length(struct Node *top){//retorna o tamanho de uma lista dinamica
-int len=0;
+int len=1;
 
 while(top){
     len++;
@@ -109,14 +110,21 @@ void DecimalToBaseX(int numeroConvertido,int baseNumerica, struct Node **top){//
     }
 }
 
+void ConvertBinToXbits(int numeroBits, struct Node **top){//função que recebe uma pilha binaria e converte para a quantidade de bits desejada pra representação
 
+numeroBits=numeroBits-length(*top);//ex o numero tem 4 bits e precisa ser representado em 16, ou seja precisamos add 12 bits
+
+for(int i=0;i<numeroBits;i++){
+push(0, top);
+}
+
+}
 void DecimalToBCD(int numeroConvertido, struct Node **top){//Recebe um numero decimal e retorna o numero em Binary Coded Decimal
     int digito=0;
     while(numeroConvertido!=0){
         digito=numeroConvertido%10;
-        DecimalToBaseX(numeroConvertido,2, &top);//base binaria
-
-        //printf("digito atual [%d]\n", digito);
+        DecimalToBaseX(digito,2, top);//base binaria
+        ConvertBinToXbits(4, top);
 
         numeroConvertido=numeroConvertido/10;
         
@@ -153,15 +161,7 @@ void BinToSignedBin(int lastOnePos, struct Node**top){//converte um binario para
     }
 }
 
-void ConvertBinToXbits(int numeroBits, struct Node **top){//função que recebe uma pilha binaria e converte para a quantidade de bits desejada pra representação
 
-numeroBits=numeroBits-length(*top);//ex o numero tem 4 bits e precisa ser representado em 16, ou seja precisamos add 12 bits
-
-for(int i=0;i<numeroBits;i++){
-push(0, top);
-}
-
-}
 int main() {
     int option;
     int num;
